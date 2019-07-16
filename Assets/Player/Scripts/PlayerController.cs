@@ -10,16 +10,14 @@ public class PlayerController : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float MaxSpeed = 2f;
 
-	[Header("Raycast Rotation")]
-	public bool UseRaycast = true;
+	[Header("Mouse Rotation")]
 	public float MouseRaycastSensitivity = 15f;
 	public float RaycastRange = Mathf.Infinity;
 	public float RotationSpeed = 20f;
 	public GameObject CursorInScene;
 
-	[Header("Mouse/Joystick Rotation")]
-	public float MouseSensitivity = 1f;
-	public float JoystickSensitivity = 1f;
+	[Header("Joystick Rotation")]
+	public float JoystickSensitivity = 10f;
 
 	#endregion
 
@@ -35,6 +33,7 @@ public class PlayerController : MonoBehaviour {
 	private Collider[] colliders;
 	private Health health;
 	private RectTransform cursor;
+	private bool isUsingJoystickRotation = false;
 	private bool IsSameMousePosition { get { return MouseDelta == Vector3.zero; } }
 	private float MouseDeltaX { get { return Input.GetAxis("Mouse X") * MouseRaycastSensitivity; } }
 	private float MouseDeltaY { get { return Input.GetAxis("Mouse Y") * MouseRaycastSensitivity; } }
@@ -102,19 +101,24 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateRotation()
 	{
-		if (UseRaycast)
+		UpdateMouseRotation();
+		UpdateJoystickRotation();
+	}
+
+	private void UpdateJoystickRotation()
+	{
+		float joystickH = Input.GetAxis("JoystickHorizontal");
+		float joystickV = -Input.GetAxis("JoystickVertical");
+
+		if (joystickH != 0 || joystickV != 0)
 		{
-			RotateUsingRaycast();
-		}
-		else
-		{
-			float angle = Input.GetAxis("Mouse X") * MouseSensitivity;
-			angle += -Input.GetAxis("JoystickTurn") * JoystickSensitivity;
-			transform.RotateAround(transform.position, transform.up, angle);
+			Vector3 dir = new Vector3(joystickH, 0, joystickV).normalized;
+			LookAtDirection(dir);
+			isUsingJoystickRotation = true;
 		}
 	}
 
-	private void RotateUsingRaycast()
+	private void UpdateMouseRotation()
 	{
 		if (IsSameMousePosition)
 		{
@@ -129,6 +133,8 @@ public class PlayerController : MonoBehaviour {
 		{
 			DoRotation(mouseHit);
 		}
+
+		isUsingJoystickRotation = false;
 	}
 
 	private void DoRotation(RaycastHit mouseHit)
@@ -136,8 +142,13 @@ public class PlayerController : MonoBehaviour {
 		CursorInScene.transform.position = mouseHit.point;
 		Vector3 mousePos = mouseHit.point;
 		mousePos.y = transform.position.y;
-		
+
 		Vector3 dir = (mousePos - transform.position).normalized;
+		LookAtDirection(dir);
+	}
+
+	private void LookAtDirection(Vector3 dir)
+	{
 		Quaternion rot = Quaternion.LookRotation(dir);
 		transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * RotationSpeed);
 	}
