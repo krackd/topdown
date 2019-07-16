@@ -7,15 +7,15 @@ public class FollowCamera : MonoBehaviour
 	public float RotationSpeed = 0.1f;
 
 	[Header("Offset")]
+	public bool UseLookAroundButton = false;
 	public Vector3 CamOffset = Vector3.zero;
 	public Vector3 MouseOffset = Vector3.zero;
+
+	private RectTransform cursor;
 
 	// Use this for initialization
 	void Start()
 	{
-		//Cursor.lockState = CursorLockMode.Locked;
-		//Cursor.visible = false;
-
 		if (target == null)
 		{
 			Debug.LogError("The target of follow camera could not be null!");
@@ -24,6 +24,9 @@ public class FollowCamera : MonoBehaviour
 
 	private void Awake()
 	{
+		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
+		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
+
 		UpdatePosition(false);
 		UpdateRotation();
 	}
@@ -41,15 +44,24 @@ public class FollowCamera : MonoBehaviour
 		targetPos += CamOffset;
 		Vector3 pos = isSmooth ? Vector3.SmoothDamp(transform.position, targetPos, ref currentVelocity, TranslationSmoothTime) : targetPos;
 		
-		Vector3 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		if (!UseLookAroundButton || Input.GetButton("LookAround"))
+		{
+			pos = lookAround(pos);
+		}
+
+		transform.position = pos;
+	}
+
+	private Vector3 lookAround(Vector3 pos)
+	{
+		Vector3 mouse = Camera.main.ScreenToViewportPoint(cursor.position);
 		mouse *= 2f;
 		mouse.y -= 1f;
 		mouse.x -= 1f;
 
 		pos.z += MouseOffset.z * mouse.y;
 		pos.x += MouseOffset.x * mouse.x;
-
-		transform.position = pos;
+		return pos;
 	}
 
 	private void UpdateRotation()

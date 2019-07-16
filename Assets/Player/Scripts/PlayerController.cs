@@ -10,9 +10,16 @@ public class PlayerController : MonoBehaviour {
 	[Range(1f, 10f)]
 	public float MaxSpeed = 2f;
 
-	[Header("Rotation")]
+	[Header("Raycast Rotation")]
+	public bool UseRaycast = true;
+	public float MouseRaycastSensitivity = 15f;
+	public float RaycastRange = Mathf.Infinity;
 	public float RotationSpeed = 20f;
-	public LayerMask MouseMask;
+	public GameObject CursorInScene;
+
+	[Header("Mouse/Joystick Rotation")]
+	public float MouseSensitivity = 1f;
+	public float JoystickSensitivity = 1f;
 
 	#endregion
 
@@ -27,12 +34,20 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
 	private Collider[] colliders;
 	private Health health;
+	private RectTransform cursor;
+	private bool IsSameMousePosition { get { return MouseDelta == Vector3.zero; } }
+	private float MouseDeltaX { get { return Input.GetAxis("Mouse X") * MouseRaycastSensitivity; } }
+	private float MouseDeltaY { get { return Input.GetAxis("Mouse Y") * MouseRaycastSensitivity; } }
+	private Vector3 MouseDelta { get { return new Vector3(MouseDeltaX, MouseDeltaY, 0f); } }
 
 	#endregion
 
 	// Use this for initialization
 	void Start ()
 	{
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+
 		rb = GetComponent<Rigidbody>();
 		if (rb == null)
 		{
@@ -42,6 +57,9 @@ public class PlayerController : MonoBehaviour {
 		colliders = GetComponents<Collider>();
 
 		health = GetComponent<Health>();
+
+		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
+		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 	}
 
 	// Update is called once per frame
@@ -53,7 +71,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateVelocity();
-		UpdateRotation();
 	}
 
 	void Update()
@@ -63,7 +80,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 
-
+		UpdateRotation();
 	}
 
 	private void UpdateVelocity()
@@ -79,15 +96,36 @@ public class PlayerController : MonoBehaviour {
 			dir.Normalize();
 		}
 		dir *= MoveForce;
-		rb.MovePosition(transform.position + dir * Time.deltaTime);
-
+		Vector3 delta = dir * Time.deltaTime;
+		rb.MovePosition(transform.position + delta);
 	}
 
 	private void UpdateRotation()
 	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (UseRaycast)
+		{
+			RotateUsingRaycast();
+		}
+		else
+		{
+			float angle = Input.GetAxis("Mouse X") * MouseSensitivity;
+			angle += -Input.GetAxis("JoystickTurn") * JoystickSensitivity;
+			transform.RotateAround(transform.position, transform.up, angle);
+		}
+	}
+
+	private void RotateUsingRaycast()
+	{
+		if (IsSameMousePosition)
+		{
+			return;
+		}
+
+		cursor.position += MouseDelta;
+
+		Ray ray = Camera.main.ScreenPointToRay(cursor.position);
 		RaycastHit mouseHit;
-		if (Physics.Raycast(ray, out mouseHit, MouseMask.value))
+		if (Physics.Raycast(ray, out mouseHit, RaycastRange))
 		{
 			DoRotation(mouseHit);
 		}
@@ -95,9 +133,10 @@ public class PlayerController : MonoBehaviour {
 
 	private void DoRotation(RaycastHit mouseHit)
 	{
+		CursorInScene.transform.position = mouseHit.point;
 		Vector3 mousePos = mouseHit.point;
 		mousePos.y = transform.position.y;
-
+		
 		Vector3 dir = (mousePos - transform.position).normalized;
 		Quaternion rot = Quaternion.LookRotation(dir);
 		transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * RotationSpeed);
