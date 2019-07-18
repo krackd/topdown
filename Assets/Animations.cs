@@ -2,6 +2,13 @@
 
 public class Animations : MonoBehaviour {
 
+	public enum Weapon
+	{
+		SWORD = 0,
+		PISTOL = 1,
+		RIFLE = 1
+	}
+
 	private Animator anim;
 
 	// Use this for initialization
@@ -11,31 +18,37 @@ public class Animations : MonoBehaviour {
 		PlayerStates states = GetComponentInParent<PlayerStates>();
 		if (states != null)
 		{
-			Debug.Log("PlayerStates found");
 			states.OnSwitchPistol.AddListener(SwitchPistol);
 			states.OnSwitchRifle.AddListener(SwitchRifle);
 			states.OnSwitchSword.AddListener(SwitchSword);
 		}
 	}
 
-	public void SwitchPistol()
+	private void SetWeapon(Weapon weapon)
 	{
-		anim.SetTrigger("SwitchPistol");
-	}
-
-	public void SwitchRifle()
-	{
-		anim.SetTrigger("SwitchRifle");
+		anim.SetInteger("weapon", (int)weapon);
+		anim.SetTrigger("SwitchWeapon");
 	}
 
 	public void SwitchSword()
 	{
-		anim.SetTrigger("SwitchSword");
+		SetWeapon(Weapon.SWORD);
 	}
 
+	public void SwitchPistol()
+	{
+		SetWeapon(Weapon.PISTOL);
+	}
+	
+	public void SwitchRifle()
+	{
+		SetWeapon(Weapon.RIFLE);
+	}
+	
 	public void SetVelocity(float hSpeed, float vSpeed)
 	{
 		anim.SetFloat("vSpeed", vSpeed);
 		anim.SetFloat("hSpeed", hSpeed);
+		anim.SetBool("isMoving", hSpeed != 0 || vSpeed != 0);
 	}
 }

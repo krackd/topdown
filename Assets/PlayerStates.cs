@@ -25,10 +25,10 @@ public class PlayerStates : MonoBehaviour {
 		{
 			OnSwitchPistol.Invoke();
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			OnSwitchRifle.Invoke();
-		}
+		//else if (Input.GetKeyDown(KeyCode.Alpha3))
+		//{
+		//	OnSwitchRifle.Invoke();
+		//}
 	}
 
 	public void SetVelocity(float hSpeed, float vSpeed)
