@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 
 	[Header("Movement")]
 	public float MoveForce = 2f;
-	[Range(1f, 10f)]
+	[Range(0.01f, 10f)]
 	public float MaxSpeed = 2f;
 
 	[Header("Mouse Rotation")]
@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
 	private Collider[] colliders;
 	private Health health;
+	private PlayerStates states;
 	private RectTransform cursor;
 	private bool isUsingJoystickRotation = false;
 	private bool IsSameMousePosition { get { return MouseDelta == Vector3.zero; } }
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 		colliders = GetComponents<Collider>();
 
 		health = GetComponent<Health>();
+		states = GetComponent<PlayerStates>();
 
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
@@ -97,6 +99,9 @@ public class PlayerController : MonoBehaviour {
 		dir *= MoveForce;
 		Vector3 delta = dir * Time.deltaTime;
 		rb.MovePosition(transform.position + delta);
+
+		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
+		states.SetVelocity(rotatedDir.x, rotatedDir.z);
 	}
 
 	private void UpdateRotation()

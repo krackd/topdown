@@ -1385,6 +1385,7 @@ GameObject:
   - component: {fileID: 860416071}
   - component: {fileID: 860416070}
   - component: {fileID: 860416069}
+  - component: {fileID: 860416073}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1405,13 +1406,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveForce: 4
-  MaxSpeed: 2
-  UseRaycast: 1
+  MaxSpeed: 0.5
   MouseRaycastSensitivity: 15
   RaycastRange: 1000
   RotationSpeed: 30
   CursorInScene: {fileID: 1454491417}
-  MouseSensitivity: 3
   JoystickSensitivity: 10
 --- !u!114 &860416070
 MonoBehaviour:
@@ -1472,6 +1471,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860416073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 860416068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc26d60aeb9891e4cb9128c534b1bfba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnSwitchRifle:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnSwitchPistol:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnSwitchSword:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &889470342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,6 +1662,7 @@ GameObject:
   - component: {fileID: 1045824762}
   - component: {fileID: 1045824764}
   - component: {fileID: 1045824763}
+  - component: {fileID: 1045824765}
   m_Layer: 0
   m_Name: eve_j_gonzales
   m_TagString: Untagged
@@ -1686,13 +1712,24 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: a928552c1c3ae4e49a5c94d45c0c6481, type: 3}
   m_Controller: {fileID: 9100000, guid: 83fd7f9311fc45541bda841900a70501, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1045824765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045824761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f42bf557ec424b4c90ec2031372ac4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1068464523
 GameObject:
   m_ObjectHideFlags: 0
