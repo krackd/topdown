@@ -2198,6 +2198,9 @@ MonoBehaviour:
   RotationSpeed: 30
   CursorInScene: {fileID: 1245377221440480}
   JoystickSensitivity: 10
+  DashVelocity: 10
+  DashDurationInSeconds: 0.5
+  DashKeycode: 304
 --- !u!136 &136398075950058052
 CapsuleCollider:
   m_ObjectHideFlags: 1

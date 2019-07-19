@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour {
 	[Header("Joystick Rotation")]
 	public float JoystickSensitivity = 10f;
 
+	[Header("Dash")]
+	public float DashVelocity = 5f;
+	public float DashDurationInSeconds = 0.5f;
+	public float DashRechargeCooldown = 3f;
+	public int DashCharges = 3;
+
 	#endregion
 
 	#region Properties
@@ -33,7 +39,9 @@ public class PlayerController : MonoBehaviour {
 	private Health health;
 	private PlayerStates states;
 	private RectTransform cursor;
-	private bool isUsingJoystickRotation = false;
+	private Vector3 moveDir;
+	private bool canMove = true;
+	private int dashCharges;
 	private Vector3 previousMousePos;
 	private bool IsSameMousePosition { get { return Input.mousePosition.Equals(previousMousePos); } }
 
@@ -58,6 +66,8 @@ public class PlayerController : MonoBehaviour {
 
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
+
+		dashCharges = DashCharges;
 	}
 
 	// Update is called once per frame
@@ -80,8 +90,33 @@ public class PlayerController : MonoBehaviour {
 
 		UpdateRotation();
 		UpdateAttack();
+		UpdateDash();
 
 		previousMousePos = Input.mousePosition;
+	}
+
+	private void UpdateDash()
+	{
+		if (dashCharges <= 0)
+		{
+			return;
+		}
+
+		if (Input.GetButtonDown("Dash"))
+		{
+			rb.velocity = moveDir * DashVelocity;
+			canMove = false;
+			dashCharges--;
+			timeout(DashDurationInSeconds, () =>
+			{
+				rb.velocity = Vector3.zero;
+				canMove = true;
+				timeout(DashRechargeCooldown, () =>
+				{
+					dashCharges++;
+				});
+			});
+		}
 	}
 
 	private void UpdateAttack()
@@ -94,6 +129,11 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateVelocity()
 	{
+		if (!canMove)
+		{
+			return;
+		}
+
 		float v = Input.GetAxis("Vertical");
 		float h = Input.GetAxis("Horizontal");
 
@@ -111,6 +151,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
 		states.SetVelocity(rotatedDir.x, rotatedDir.z);
 		states.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
+		moveDir = dir.normalized;
 	}
 
 	private void UpdateRotation()
@@ -128,7 +169,6 @@ public class PlayerController : MonoBehaviour {
 		{
 			Vector3 dir = new Vector3(joystickH, 0, joystickV).normalized;
 			LookAtDirection(dir);
-			isUsingJoystickRotation = true;
 		}
 	}
 
@@ -147,8 +187,6 @@ public class PlayerController : MonoBehaviour {
 		{
 			DoRotation(mouseHit);
 		}
-
-		isUsingJoystickRotation = false;
 	}
 
 	private void DoRotation(RaycastHit mouseHit)
@@ -165,5 +203,26 @@ public class PlayerController : MonoBehaviour {
 	{
 		Quaternion rot = Quaternion.LookRotation(dir);
 		transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * RotationSpeed);
+	}
+
+	private bool noModifierPressed()
+	{
+		return !anyModifierPressed();
+	}
+
+	private bool anyModifierPressed()
+	{
+		return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand);
+	}
+
+	private void timeout(float seconds, System.Action action)
+	{
+		StartCoroutine(timeoutCoroutine(seconds, action));
+	}
+
+	private IEnumerator timeoutCoroutine(float seconds, System.Action action)
+	{
+		yield return new WaitForSeconds(seconds);
+		action.Invoke();
 	}
 }
