@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour {
 	public float MaxSpeed = 2f;
 
 	[Header("Mouse Rotation")]
-	public float MouseRaycastSensitivity = 15f;
 	public float RaycastRange = Mathf.Infinity;
 	public float RotationSpeed = 20f;
 	public GameObject CursorInScene;
@@ -35,10 +34,8 @@ public class PlayerController : MonoBehaviour {
 	private PlayerStates states;
 	private RectTransform cursor;
 	private bool isUsingJoystickRotation = false;
-	private bool IsSameMousePosition { get { return MouseDelta == Vector3.zero; } }
-	private float MouseDeltaX { get { return Input.GetAxis("Mouse X") * MouseRaycastSensitivity; } }
-	private float MouseDeltaY { get { return Input.GetAxis("Mouse Y") * MouseRaycastSensitivity; } }
-	private Vector3 MouseDelta { get { return new Vector3(MouseDeltaX, MouseDeltaY, 0f); } }
+	private Vector3 previousMousePos;
+	private bool IsSameMousePosition { get { return Input.mousePosition.Equals(previousMousePos); } }
 
 	#endregion
 
@@ -46,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
 	{
 		Cursor.visible = false;
-		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.lockState = CursorLockMode.Confined;
 
 		rb = GetComponent<Rigidbody>();
 		if (rb == null)
@@ -82,6 +79,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateRotation();
+
+		previousMousePos = Input.mousePosition;
 	}
 
 	private void UpdateVelocity()
@@ -130,7 +129,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 
-		cursor.position += MouseDelta;
+		cursor.position = Input.mousePosition;
 
 		Ray ray = Camera.main.ScreenPointToRay(cursor.position);
 		RaycastHit mouseHit;
