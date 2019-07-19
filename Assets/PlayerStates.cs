@@ -25,17 +25,17 @@ public class PlayerStates : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			SwitchWeapon(Instantiate(SwordPrefab, WeaponSlot.transform));
 			OnSwitchSword.Invoke();
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha2))
+		else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			SwitchWeapon(Instantiate(PistolPrefab, WeaponSlot.transform));
 			OnSwitchPistol.Invoke();
 		}
-		//else if (Input.GetKeyDown(KeyCode.Alpha3))
+		//else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
 		//{
 		//	OnSwitchRifle.Invoke();
 		//}
