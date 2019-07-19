@@ -79,8 +79,17 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateRotation();
+		UpdateAttack();
 
 		previousMousePos = Input.mousePosition;
+	}
+
+	private void UpdateAttack()
+	{
+		if (Input.GetButtonDown("Fire1"))
+		{
+			states.Attack();
+		}
 	}
 
 	private void UpdateVelocity()

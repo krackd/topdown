@@ -56,4 +56,9 @@ public class Animations : MonoBehaviour {
 	{
 		anim.SetBool("isMoving", isMoving);
 	}
+
+	public void Attack()
+	{
+		anim.SetTrigger("Attack");
+	}
 }

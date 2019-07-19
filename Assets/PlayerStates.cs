@@ -67,4 +67,9 @@ public class PlayerStates : MonoBehaviour {
 	{
 		anims.SetVelocity(isMoving);
 	}
+
+	public void Attack()
+	{
+		anims.Attack();
+	}
 }
