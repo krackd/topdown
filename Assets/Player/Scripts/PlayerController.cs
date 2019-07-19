@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
 		states.SetVelocity(rotatedDir.x, rotatedDir.z);
+		states.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
 	}
 
 	private void UpdateRotation()

@@ -51,4 +51,9 @@ public class Animations : MonoBehaviour {
 		anim.SetFloat("hSpeed", hSpeed);
 		anim.SetBool("isMoving", hSpeed != 0 || vSpeed != 0);
 	}
+
+	public void SetVelocity(bool isMoving)
+	{
+		anim.SetBool("isMoving", isMoving);
+	}
 }
