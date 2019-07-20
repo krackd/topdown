@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class Animations : MonoBehaviour {
 
@@ -9,13 +10,21 @@ public class Animations : MonoBehaviour {
 		RIFLE = 1
 	}
 
+	public UnityEvent OnDoDamage;
+	public UnityEvent OnAttackEnded;
+
+	private const int NB_ATTACK_ANIM = 3;
+
 	private Animator anim;
+	private PlayerStates states;
+
+	private int currentAttackAnim = 0;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
 
-		PlayerStates states = GetComponentInParent<PlayerStates>();
+		states = GetComponentInParent<PlayerStates>();
 		if (states != null)
 		{
 			states.OnSwitchPistol.AddListener(SwitchPistol);
@@ -52,7 +61,7 @@ public class Animations : MonoBehaviour {
 		anim.SetBool("isMoving", hSpeed != 0 || vSpeed != 0);
 	}
 
-	public void SetVelocity(bool isMoving)
+	public void SetIsMoving(bool isMoving)
 	{
 		anim.SetBool("isMoving", isMoving);
 	}
@@ -60,5 +69,26 @@ public class Animations : MonoBehaviour {
 	public void Attack()
 	{
 		anim.SetTrigger("Attack");
+		currentAttackAnim++;
+		currentAttackAnim %= NB_ATTACK_ANIM;
+		anim.SetInteger("attackAnim", currentAttackAnim);
+	}
+
+	public void ResetAttackAnim()
+	{
+		currentAttackAnim = 0;
+		anim.SetInteger("attackAnim", currentAttackAnim);
+	}
+
+	// Events
+
+	public void AttackEndEvent()
+	{
+		OnAttackEnded.Invoke();
+	}
+
+	public void DoDamageEvent()
+	{
+		OnDoDamage.Invoke();
 	}
 }

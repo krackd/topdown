@@ -436,6 +436,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114687112279681150, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: AttackRechargeDelayInSeconds
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 2}
   m_IsPrefabAsset: 0

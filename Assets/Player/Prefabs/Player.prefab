@@ -2124,6 +2124,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f42bf557ec424b4c90ec2031372ac4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDoDamage:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnAttackEnded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114390931384132210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2198,9 +2208,12 @@ MonoBehaviour:
   RotationSpeed: 30
   CursorInScene: {fileID: 1245377221440480}
   JoystickSensitivity: 10
-  DashVelocity: 10
-  DashDurationInSeconds: 0.5
-  DashKeycode: 304
+  AttackRechargeDelayInSeconds: 2
+  MaxAttackCharges: 3
+  DashVelocity: 15
+  DashDurationInSeconds: 0.2
+  DashRechargeCooldown: 3
+  DashCharges: 3
 --- !u!136 &136398075950058052
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -18,11 +18,19 @@ public class PlayerController : MonoBehaviour {
 	[Header("Joystick Rotation")]
 	public float JoystickSensitivity = 10f;
 
+	[Header("Attack")]
+	public float AttackRechargeDelayInSeconds = 3f;
+	public int MaxAttackCharges = 3;
+	private int attackCharges;
+	private bool canAttack = true;
+	private Coroutine attackCoroutine;
+
 	[Header("Dash")]
 	public float DashVelocity = 5f;
 	public float DashDurationInSeconds = 0.5f;
 	public float DashRechargeCooldown = 3f;
 	public int DashCharges = 3;
+	private int dashCharges;
 
 	#endregion
 
@@ -38,10 +46,10 @@ public class PlayerController : MonoBehaviour {
 	private Collider[] colliders;
 	private Health health;
 	private PlayerStates states;
+	private Animations anims;
 	private RectTransform cursor;
 	private Vector3 moveDir;
 	private bool canMove = true;
-	private int dashCharges;
 	private Vector3 previousMousePos;
 	private bool IsSameMousePosition { get { return Input.mousePosition.Equals(previousMousePos); } }
 
@@ -63,11 +71,15 @@ public class PlayerController : MonoBehaviour {
 
 		health = GetComponent<Health>();
 		states = GetComponent<PlayerStates>();
+		anims = GetComponentInChildren<Animations>();
+		anims.OnAttackEnded.AddListener(AttackEndEvent);
+		anims.OnDoDamage.AddListener(DoDamageEvent);
 
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 
 		dashCharges = DashCharges;
+		attackCharges = MaxAttackCharges;
 	}
 
 	// Update is called once per frame
@@ -97,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateDash()
 	{
-		if (dashCharges <= 0)
+		if (dashCharges <= 0 || !canMove)
 		{
 			return;
 		}
@@ -121,10 +133,45 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateAttack()
 	{
+		if (attackCharges <= 0 || !canAttack)
+		{
+			return;
+		}
+
 		if (Input.GetButtonDown("Fire1"))
 		{
-			states.Attack();
+			anims.Attack();
+
+			RestartResetAttackCharges();
+
+			canAttack = false;
+			attackCharges--;
 		}
+	}
+
+	private void RestartResetAttackCharges()
+	{
+		if (attackCoroutine != null)
+		{
+			StopCoroutine(attackCoroutine);
+		}
+
+		attackCoroutine = timeout(AttackRechargeDelayInSeconds, () =>
+		{
+			attackCharges = MaxAttackCharges;
+			anims.ResetAttackAnim();
+			attackCoroutine = null;
+		});
+	}
+
+	public void AttackEndEvent()
+	{
+		canAttack = true;
+	}
+
+	public void DoDamageEvent()
+	{
+		
 	}
 
 	private void UpdateVelocity()
@@ -149,8 +196,8 @@ public class PlayerController : MonoBehaviour {
 		rb.MovePosition(transform.position + delta);
 
 		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
-		states.SetVelocity(rotatedDir.x, rotatedDir.z);
-		states.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
+		anims.SetVelocity(rotatedDir.x, rotatedDir.z);
+		anims.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
 		moveDir = dir.normalized;
 	}
 
@@ -215,9 +262,9 @@ public class PlayerController : MonoBehaviour {
 		return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand);
 	}
 
-	private void timeout(float seconds, System.Action action)
+	private Coroutine timeout(float seconds, System.Action action)
 	{
-		StartCoroutine(timeoutCoroutine(seconds, action));
+		return StartCoroutine(timeoutCoroutine(seconds, action));
 	}
 
 	private IEnumerator timeoutCoroutine(float seconds, System.Action action)

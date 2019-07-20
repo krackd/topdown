@@ -14,13 +14,12 @@ public class PlayerStates : MonoBehaviour {
 	public UnityEvent OnSwitchPistol;
 	public UnityEvent OnSwitchSword;
 
-	private Animations anims;
 	private GameObject currentWeapon;
 
 	void Start()
 	{
-		anims = GetComponentInChildren<Animations>();
 		OnSwitchSword.Invoke();
+		SwitchWeapon(Instantiate(SwordPrefab, WeaponSlot.transform));
 	}
 
 	// Update is called once per frame
@@ -56,20 +55,5 @@ public class PlayerStates : MonoBehaviour {
 	private void Equip(GameObject ne)
 	{
 		currentWeapon = ne;
-	}
-
-	public void SetVelocity(float hSpeed, float vSpeed)
-	{
-		anims.SetVelocity(hSpeed, vSpeed);
-	}
-
-	public void SetIsMoving(bool isMoving)
-	{
-		anims.SetVelocity(isMoving);
-	}
-
-	public void Attack()
-	{
-		anims.Attack();
 	}
 }
