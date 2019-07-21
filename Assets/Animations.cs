@@ -11,6 +11,8 @@ public class Animations : MonoBehaviour {
 	}
 
 	public UnityEvent OnDoDamage;
+	public UnityEvent OnDoAoe;
+	public UnityEvent OnJumpBegin;
 	public UnityEvent OnAttackEnded;
 
 	private const int NB_ATTACK_ANIM = 3;
@@ -80,6 +82,11 @@ public class Animations : MonoBehaviour {
 		anim.SetInteger("attackAnim", currentAttackAnim);
 	}
 
+	public void JumpAttack()
+	{
+		anim.SetTrigger("JumpAttack");
+	}
+
 	// Events
 
 	public void AttackEndEvent()
@@ -90,5 +97,15 @@ public class Animations : MonoBehaviour {
 	public void DoDamageEvent()
 	{
 		OnDoDamage.Invoke();
+	}
+
+	public void DoAoeEvent()
+	{
+		OnDoAoe.Invoke();
+	}
+
+	public void JumpBeginEvent()
+	{
+		OnJumpBegin.Invoke();
 	}
 }

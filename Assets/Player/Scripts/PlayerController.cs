@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	public float MoveForce = 2f;
 	[Range(0.01f, 10f)]
 	public float MaxSpeed = 2f;
+	private bool canMove = true;
 
 	[Header("Mouse Rotation")]
 	public float RaycastRange = Mathf.Infinity;
@@ -32,6 +33,12 @@ public class PlayerController : MonoBehaviour {
 	public int DashCharges = 3;
 	private int dashCharges;
 
+	[Header("Jump")]
+	public float JumpVelocity = 5f;
+	public float JumpDurationInSeconds = 0.5f;
+	public float JumpRechargeCooldown = 3f;
+	private bool canJumpAttack = true;
+
 	#endregion
 
 	#region Properties
@@ -49,7 +56,7 @@ public class PlayerController : MonoBehaviour {
 	private Animations anims;
 	private RectTransform cursor;
 	private Vector3 moveDir;
-	private bool canMove = true;
+	
 	private Vector3 previousMousePos;
 	private bool IsSameMousePosition { get { return Input.mousePosition.Equals(previousMousePos); } }
 
@@ -74,6 +81,8 @@ public class PlayerController : MonoBehaviour {
 		anims = GetComponentInChildren<Animations>();
 		anims.OnAttackEnded.AddListener(AttackEndEvent);
 		anims.OnDoDamage.AddListener(DoDamageEvent);
+		anims.OnDoAoe.AddListener(DoAoeEvent);
+		anims.OnJumpBegin.AddListener(JumpBeginEvent);
 
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
@@ -103,6 +112,7 @@ public class PlayerController : MonoBehaviour {
 		UpdateRotation();
 		UpdateAttack();
 		UpdateDash();
+		UpdateJumpAttack();
 
 		previousMousePos = Input.mousePosition;
 	}
@@ -129,6 +139,43 @@ public class PlayerController : MonoBehaviour {
 				});
 			});
 		}
+	}
+
+	private void UpdateJumpAttack()
+	{
+		if (!canJumpAttack)
+		{
+			return;
+		}
+
+		if (Input.GetButtonDown("Jump"))
+		{
+			canJumpAttack = false;
+			canAttack = false;
+			// JumpBeginEvent will chang the velocity
+			anims.JumpAttack();
+		}
+	}
+
+	public void JumpBeginEvent()
+	{
+		DoJump();
+	}
+	
+	private void DoJump()
+	{
+		rb.velocity = transform.forward * JumpVelocity;
+		canMove = false;
+		timeout(JumpDurationInSeconds, () =>
+		{
+			rb.velocity = Vector3.zero;
+			canMove = true;
+		});
+
+		timeout(JumpRechargeCooldown, () =>
+		{
+			canJumpAttack = true;
+		});
 	}
 
 	private void UpdateAttack()
@@ -172,6 +219,11 @@ public class PlayerController : MonoBehaviour {
 	public void DoDamageEvent()
 	{
 		
+	}
+
+	public void DoAoeEvent()
+	{
+
 	}
 
 	private void UpdateVelocity()
