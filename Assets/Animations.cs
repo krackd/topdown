@@ -69,9 +69,9 @@ public class Animations : MonoBehaviour {
 	public void Attack()
 	{
 		anim.SetTrigger("Attack");
+		anim.SetInteger("attackAnim", currentAttackAnim);
 		currentAttackAnim++;
 		currentAttackAnim %= NB_ATTACK_ANIM;
-		anim.SetInteger("attackAnim", currentAttackAnim);
 	}
 
 	public void ResetAttackAnim()

@@ -439,7 +439,7 @@ Prefab:
     - target: {fileID: 114687112279681150, guid: 98a7ad831c0a5d443a219e724abeed0d,
         type: 2}
       propertyPath: AttackRechargeDelayInSeconds
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 2}
