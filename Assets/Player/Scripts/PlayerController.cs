@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour {
 
 		timeout(JumpDurationInSeconds * 0.6f, () =>
 		{
-			rb.velocity = -transform.up * JumpVelocity;
+			rb.velocity += -transform.up * JumpVelocity;
 		});
 
 		timeout(JumpDurationInSeconds, () =>

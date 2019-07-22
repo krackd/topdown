@@ -820,7 +820,7 @@ GameObject:
   - component: {fileID: 114237657223559900}
   m_Layer: 0
   m_Name: eve_j_gonzales
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1032,9 +1032,10 @@ GameObject:
   - component: {fileID: 114390931384132210}
   - component: {fileID: 114687112279681150}
   - component: {fileID: 114465826473002412}
+  - component: {fileID: 114980595199389990}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2213,7 +2214,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveForce: 4
-  MaxSpeed: 0.5
   RaycastRange: 1000
   RotationSpeed: 30
   CursorInScene: {fileID: 1245377221440480}
@@ -2221,12 +2221,25 @@ MonoBehaviour:
   AttackRechargeDelayInSeconds: 1
   MaxAttackCharges: 3
   DashVelocity: 15
-  DashDurationInSeconds: 0.2
+  DashDurationInSeconds: 0.3
   DashRechargeCooldown: 3
   DashCharges: 3
-  JumpVelocity: 7
-  JumpDurationInSeconds: 0.5
+  JumpVelocity: 10
+  JumpDurationInSeconds: 0.7
   JumpRechargeCooldown: 3
+--- !u!114 &114980595199389990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1949970075081370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 257daf09b1507a34e940a063f95f29ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WorldLimitY: -20
+  Checkpoint: {fileID: 0}
 --- !u!136 &136398075950058052
 CapsuleCollider:
   m_ObjectHideFlags: 1
