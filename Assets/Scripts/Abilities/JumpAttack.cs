@@ -4,6 +4,7 @@ public class JumpAttack : MoveAbility
 {
 	protected override void DoStart()
 	{
+		base.DoStart();
 		Animations.OnJumpBegin.AddListener(JumpBeginEvent);
 		LaunchTimersInUpdate = false;
 		HalfDurationFactor = 0.6f;
@@ -11,7 +12,7 @@ public class JumpAttack : MoveAbility
 	
 	protected override void DoAction()
 	{
-		PlayerController.CanAttack = false;
+		Attack.CanAttack = false;
 		// JumpBeginEvent will change the velocity
 		Animations.JumpAttack();
 	}
@@ -37,7 +38,6 @@ public class JumpAttack : MoveAbility
 	{
 		Rigidbody.velocity = Vector3.zero;
 		PlayerController.CanMove = true;
-		
 	}
 	
 }

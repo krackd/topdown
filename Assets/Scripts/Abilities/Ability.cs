@@ -8,7 +8,7 @@ public abstract class Ability : MonoBehaviour {
 	public float DurationInSeconds = 2f;
 	public float RechargeCooldown = 3f;
 	public int Charges = 3;
-	private int charges;
+	protected int charges;
 
 	[Header("Input")]
 	public string ButtonName;
@@ -16,13 +16,15 @@ public abstract class Ability : MonoBehaviour {
 	[Header("Timers")]
 	public bool LaunchTimersInUpdate = true;
 	public float HalfDurationFactor = 0.5f;
+	
+	protected PlayerController PlayerController { get; private set; }
+	protected Rigidbody Rigidbody { get; private set; }
+	protected Health Health { get; private set; }
+	protected Animations Animations { get; private set; }
 
-	private Health health;
-	private bool IsDead { get { return health != null && health.IsDead; } }
+	protected bool IsDead { get { return Health != null && Health.IsDead; } }
 
-	protected PlayerController PlayerController;
-	protected Rigidbody Rigidbody;
-	protected Animations Animations;
+	private bool actionCanceled = false;
 
 	// Use this for initialization
 	void Start () {
@@ -36,7 +38,7 @@ public abstract class Ability : MonoBehaviour {
 			Debug.LogError("No rigid body found in player!");
 		}
 
-		health = GetComponent<Health>();
+		Health = GetComponent<Health>();
 		Animations = GetComponentInChildren<Animations>();
 
 		DoStart();
@@ -52,8 +54,15 @@ public abstract class Ability : MonoBehaviour {
 		if (Input.GetButtonDown(ButtonName))
 		{
 			DoAction();
-			charges--;
 
+			if (actionCanceled)
+			{
+				actionCanceled = false;
+				return;
+			}
+
+			charges--;
+			
 			if (LaunchTimersInUpdate)
 			{
 				LaunchTimers();
@@ -64,35 +73,29 @@ public abstract class Ability : MonoBehaviour {
 
 	protected void LaunchTimers()
 	{
-		timeout(DurationInSeconds * HalfDurationFactor, () =>
+		CoroutineUtils.timeout(this, DurationInSeconds * HalfDurationFactor, () =>
 		{
 			DoHalfDurationAction();
 		});
 
-		timeout(DurationInSeconds, () =>
+		CoroutineUtils.timeout(this, DurationInSeconds, () =>
 		{
 			DoActionAfterDuration();
-			timeout(RechargeCooldown, () =>
+			CoroutineUtils.timeout(this, RechargeCooldown, () =>
 			{
 				charges++;
 			});
 		});
 	}
 
-	private Coroutine timeout(float seconds, System.Action action)
-	{
-		return StartCoroutine(timeoutCoroutine(seconds, action));
-	}
-
-	private IEnumerator timeoutCoroutine(float seconds, System.Action action)
-	{
-		yield return new WaitForSeconds(seconds);
-		action.Invoke();
-	}
-
 	protected virtual void DoStart()
 	{
 
+	}
+
+	protected void CancelAction()
+	{
+		actionCanceled = true;
 	}
 
 	protected abstract void DoAction();

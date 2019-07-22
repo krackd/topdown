@@ -25,8 +25,6 @@ public class PlayerController : MonoBehaviour {
 	public float AttackRechargeDelayInSeconds = 3f;
 	public int MaxAttackCharges = 3;
 	private int attackCharges;
-	public bool CanAttack = true;
-	private Coroutine attackCoroutine;
 
 	#endregion
 
@@ -69,11 +67,7 @@ public class PlayerController : MonoBehaviour {
 		health = GetComponent<Health>();
 		states = GetComponent<PlayerStates>();
 		anims = GetComponentInChildren<Animations>();
-		anims.OnAttackEnded.AddListener(AttackEndEvent);
-		anims.OnDoDamage.AddListener(DoDamageEvent);
-		anims.OnDoAoe.AddListener(DoAoeEvent);
 		
-
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 
@@ -99,59 +93,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateRotation();
-		UpdateAttack();
 
 		previousMousePos = Input.mousePosition;
-	}
-
-	private void UpdateAttack()
-	{
-		if (attackCharges <= 0 || !CanAttack)
-		{
-			return;
-		}
-
-		if (Input.GetButtonDown("Fire1"))
-		{
-			anims.Attack();
-
-			RestartResetAttackCharges();
-
-			CanAttack = false;
-			ReduceMoveControl();
-			attackCharges--;
-		}
-	}
-
-	private void RestartResetAttackCharges()
-	{
-		if (attackCoroutine != null)
-		{
-			StopCoroutine(attackCoroutine);
-		}
-
-		attackCoroutine = timeout(AttackRechargeDelayInSeconds, () =>
-		{
-			attackCharges = MaxAttackCharges;
-			anims.ResetAttackAnim();
-			attackCoroutine = null;
-		});
-	}
-
-	public void AttackEndEvent()
-	{
-		CanAttack = true;
-		ResetMoveControl();
-	}
-
-	public void DoDamageEvent()
-	{
-		
-	}
-
-	public void DoAoeEvent()
-	{
-
 	}
 
 	private void UpdateVelocity()
@@ -240,26 +183,5 @@ public class PlayerController : MonoBehaviour {
 	public void ReduceMoveControl()
 	{
 		moveForce = MoveForce * MOVE_CONTROL_REDUCTION_FACTOR;
-	}
-
-	private bool noModifierPressed()
-	{
-		return !anyModifierPressed();
-	}
-
-	private bool anyModifierPressed()
-	{
-		return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand);
-	}
-
-	private Coroutine timeout(float seconds, System.Action action)
-	{
-		return StartCoroutine(timeoutCoroutine(seconds, action));
-	}
-
-	private IEnumerator timeoutCoroutine(float seconds, System.Action action)
-	{
-		yield return new WaitForSeconds(seconds);
-		action.Invoke();
 	}
 }
