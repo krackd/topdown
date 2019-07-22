@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement")]
 	public float MoveForce = 2f;
 	private float moveForce;
-	[Range(0.01f, 10f)]
-	private bool canMove = true;
+	public bool CanMove = true;
+	public Vector3 MoveDir { get; private set; }
 
 	[Header("Mouse Rotation")]
 	public float RaycastRange = Mathf.Infinity;
@@ -25,21 +25,8 @@ public class PlayerController : MonoBehaviour {
 	public float AttackRechargeDelayInSeconds = 3f;
 	public int MaxAttackCharges = 3;
 	private int attackCharges;
-	private bool canAttack = true;
+	public bool CanAttack = true;
 	private Coroutine attackCoroutine;
-
-	[Header("Dash")]
-	public float DashVelocity = 5f;
-	public float DashDurationInSeconds = 0.5f;
-	public float DashRechargeCooldown = 3f;
-	public int DashCharges = 3;
-	private int dashCharges;
-
-	[Header("Jump")]
-	public float JumpVelocity = 5f;
-	public float JumpDurationInSeconds = 0.5f;
-	public float JumpRechargeCooldown = 3f;
-	private bool canJumpAttack = true;
 
 	#endregion
 
@@ -57,7 +44,6 @@ public class PlayerController : MonoBehaviour {
 	private PlayerStates states;
 	private Animations anims;
 	private RectTransform cursor;
-	private Vector3 moveDir;
 	
 	private Vector3 previousMousePos;
 	private bool IsSameMousePosition { get { return Input.mousePosition.Equals(previousMousePos); } }
@@ -86,12 +72,11 @@ public class PlayerController : MonoBehaviour {
 		anims.OnAttackEnded.AddListener(AttackEndEvent);
 		anims.OnDoDamage.AddListener(DoDamageEvent);
 		anims.OnDoAoe.AddListener(DoAoeEvent);
-		anims.OnJumpBegin.AddListener(JumpBeginEvent);
+		
 
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 
-		dashCharges = DashCharges;
 		attackCharges = MaxAttackCharges;
 	}
 
@@ -115,82 +100,13 @@ public class PlayerController : MonoBehaviour {
 
 		UpdateRotation();
 		UpdateAttack();
-		UpdateDash();
-		UpdateJumpAttack();
 
 		previousMousePos = Input.mousePosition;
 	}
 
-	private void UpdateDash()
-	{
-		if (dashCharges <= 0 || !canMove)
-		{
-			return;
-		}
-
-		if (Input.GetButtonDown("Dash"))
-		{
-			rb.velocity = moveDir * DashVelocity;
-			canMove = false;
-			dashCharges--;
-			timeout(DashDurationInSeconds, () =>
-			{
-				rb.velocity = Vector3.zero;
-				canMove = true;
-				timeout(DashRechargeCooldown, () =>
-				{
-					dashCharges++;
-				});
-			});
-		}
-	}
-
-	private void UpdateJumpAttack()
-	{
-		if (!canJumpAttack)
-		{
-			return;
-		}
-
-		if (Input.GetButtonDown("Jump"))
-		{
-			canJumpAttack = false;
-			canAttack = false;
-			// JumpBeginEvent will chang the velocity
-			anims.JumpAttack();
-		}
-	}
-
-	public void JumpBeginEvent()
-	{
-		DoJump();
-	}
-	
-	private void DoJump()
-	{
-		rb.velocity = (transform.forward + transform.up).normalized * JumpVelocity;
-		ReduceMoveControl();
-
-		timeout(JumpDurationInSeconds * 0.6f, () =>
-		{
-			rb.velocity += -transform.up * JumpVelocity;
-		});
-
-		timeout(JumpDurationInSeconds, () =>
-		{
-			rb.velocity = Vector3.zero;
-			canMove = true;
-		});
-
-		timeout(JumpRechargeCooldown, () =>
-		{
-			canJumpAttack = true;
-		});
-	}
-
 	private void UpdateAttack()
 	{
-		if (attackCharges <= 0 || !canAttack)
+		if (attackCharges <= 0 || !CanAttack)
 		{
 			return;
 		}
@@ -201,7 +117,7 @@ public class PlayerController : MonoBehaviour {
 
 			RestartResetAttackCharges();
 
-			canAttack = false;
+			CanAttack = false;
 			ReduceMoveControl();
 			attackCharges--;
 		}
@@ -224,7 +140,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void AttackEndEvent()
 	{
-		canAttack = true;
+		CanAttack = true;
 		ResetMoveControl();
 	}
 
@@ -240,7 +156,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateVelocity()
 	{
-		if (!canMove)
+		if (!CanMove)
 		{
 			return;
 		}
@@ -262,7 +178,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
 		anims.SetVelocity(rotatedDir.x, rotatedDir.z);
 		anims.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
-		moveDir = dir.normalized;
+		MoveDir = dir.normalized;
 	}
 
 	private void UpdateRotation()
@@ -316,12 +232,12 @@ public class PlayerController : MonoBehaviour {
 		transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * RotationSpeed);
 	}
 
-	private void ResetMoveControl()
+	public void ResetMoveControl()
 	{
 		moveForce = MoveForce;
 	}
 
-	private void ReduceMoveControl()
+	public void ReduceMoveControl()
 	{
 		moveForce = MoveForce * MOVE_CONTROL_REDUCTION_FACTOR;
 	}

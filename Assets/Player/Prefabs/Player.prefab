@@ -1033,6 +1033,8 @@ GameObject:
   - component: {fileID: 114687112279681150}
   - component: {fileID: 114465826473002412}
   - component: {fileID: 114980595199389990}
+  - component: {fileID: 114661813250092682}
+  - component: {fileID: 114307961755971412}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1666,7 +1668,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1949970075081370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.906, y: 0.535, z: 0}
+  m_LocalPosition: {x: 174, y: 0.535, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4244006626225194}
@@ -2145,6 +2147,22 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114307961755971412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1949970075081370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cda5b62292ae148adf253a5956efb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DurationInSeconds: 0.7
+  RechargeCooldown: 3
+  Charges: 1
+  ButtonName: Jump
+  Velocity: 10
 --- !u!114 &114390931384132210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2202,6 +2220,22 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114661813250092682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1949970075081370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f086e2401b90f3408380326c3b5d594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DurationInSeconds: 0.3
+  RechargeCooldown: 3
+  Charges: 3
+  ButtonName: Dash
+  Velocity: 15
 --- !u!114 &114687112279681150
 MonoBehaviour:
   m_ObjectHideFlags: 1
