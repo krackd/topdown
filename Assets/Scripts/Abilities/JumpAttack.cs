@@ -8,12 +8,16 @@ public class JumpAttack : MoveAbility
 
 	private int nbJumps = 0;
 
+	private Collider[] colliders;
+
 	protected override void DoStart()
 	{
 		base.DoStart();
 		Animations.OnJumpBegin.AddListener(JumpBeginEvent);
 		LaunchTimersInUpdate = false;
 		HalfDurationFactor = 0.6f;
+
+		colliders = GetComponentsInChildren<Collider>();
 	}
 	
 	protected override void DoActionBeforeDuration()
@@ -33,6 +37,8 @@ public class JumpAttack : MoveAbility
 	private void DoJump()
 	{
 		Rigidbody.velocity += (transform.forward + transform.up).normalized * Velocity;
+		SetCollidersEnabled(false);
+		Health.IsInvincible = true;
 		PlayerController.ReduceMoveControl(JUMP_MOVE_REDUCTION_FACTOR);
 		LaunchTimers();
 	}
@@ -41,6 +47,7 @@ public class JumpAttack : MoveAbility
 	{
 		if (nbJumps <= 1)
 		{
+			SetCollidersEnabled(true);
 			Rigidbody.velocity += -transform.up * 1.5f * Velocity;
 		}
 	}
@@ -49,7 +56,15 @@ public class JumpAttack : MoveAbility
 	{
 		Rigidbody.velocity = Vector3.zero;
 		PlayerController.ResetMoveControl();
+		Health.IsInvincible = false;
 		nbJumps--;
 	}
-	
+
+	private void SetCollidersEnabled(bool isEnabled)
+	{
+		foreach (Collider collider in colliders)
+		{
+			collider.enabled = isEnabled;
+		}
+	}
 }

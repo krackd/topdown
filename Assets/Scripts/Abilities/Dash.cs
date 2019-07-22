@@ -38,6 +38,7 @@ public class Dash : MoveAbility
 		Rigidbody.velocity = prevVelocity + dashVelocity;
 		Rigidbody.useGravity = false;
 		PlayerController.CanMove = false;
+		Health.IsInvincible = true;
 		velocities.Enqueue(dashVelocity);
 
 		if (!jump.IsJumping)
@@ -67,6 +68,7 @@ public class Dash : MoveAbility
 		}
 		Rigidbody.useGravity = true;
 		PlayerController.CanMove = true;
+		Health.IsInvincible = false;
 		Animations.SetIsDashing(false);
 	}
 	
