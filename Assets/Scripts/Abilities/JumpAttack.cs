@@ -2,6 +2,12 @@
 
 public class JumpAttack : MoveAbility
 {
+	public bool IsJumping { get { return nbJumps > 0; } }
+
+	private const float JUMP_MOVE_REDUCTION_FACTOR = 0.3f;
+
+	private int nbJumps = 0;
+
 	protected override void DoStart()
 	{
 		base.DoStart();
@@ -14,9 +20,9 @@ public class JumpAttack : MoveAbility
 	{
 		base.DoActionBeforeDuration();
 
-		Attack.CanAttack = false;
 		// JumpBeginEvent will change the velocity
 		Animations.JumpAttack();
+		nbJumps++;
 	}
 
 	public void JumpBeginEvent()
@@ -27,19 +33,23 @@ public class JumpAttack : MoveAbility
 	private void DoJump()
 	{
 		Rigidbody.velocity += (transform.forward + transform.up).normalized * Velocity;
-		PlayerController.ReduceMoveControl();
+		PlayerController.ReduceMoveControl(JUMP_MOVE_REDUCTION_FACTOR);
 		LaunchTimers();
 	}
 
 	protected override void DoHalfDurationAction()
 	{
-		Rigidbody.velocity += -transform.up * 2 * Velocity;
+		if (nbJumps <= 1)
+		{
+			Rigidbody.velocity += -transform.up * 1.5f * Velocity;
+		}
 	}
 
 	protected override void DoActionAfterDuration()
 	{
 		Rigidbody.velocity = Vector3.zero;
-		PlayerController.CanMove = true;
+		PlayerController.ResetMoveControl();
+		nbJumps--;
 	}
 	
 }

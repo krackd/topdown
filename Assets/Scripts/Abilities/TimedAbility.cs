@@ -8,7 +8,7 @@ public abstract class TimedAbility : Ability {
 	public float DurationInSeconds = 2f;	
 	public float HalfDurationFactor = 0.5f;
 
-	protected override void DoAction()
+	protected sealed override void DoAction()
 	{
 		base.DoAction();
 

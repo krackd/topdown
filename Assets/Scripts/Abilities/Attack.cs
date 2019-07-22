@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
-public class Attack : Ability
+public class Attack : TimedAbility
 {
-
+	[Header("Attack")]
 	public bool CanAttack = true;
 
+	private const float ATTACK_MOVE_REDUCTION_FACTOR = 0.5f;
+
 	private Coroutine attackCoroutine;
+
+	private int nbAttacks = 0;
 
 	protected override void DoStart()
 	{
@@ -18,9 +22,9 @@ public class Attack : Ability
 		LaunchTimersInUpdate = false;
 	}
 
-	protected override void DoAction()
+	protected override void DoActionBeforeDuration()
 	{
-		base.DoAction();
+		base.DoActionBeforeDuration();
 	
 		if (!CanAttack)
 		{
@@ -33,13 +37,27 @@ public class Attack : Ability
 		RestartResetAttackCharges();
 
 		CanAttack = false;
-		PlayerController.ReduceMoveControl();
+		nbAttacks++;
+		PlayerController.ReduceMoveControl(ATTACK_MOVE_REDUCTION_FACTOR);
+	}
+
+	protected override void DoActionAfterDuration()
+	{
+		base.DoActionAfterDuration();
+
+		AttackEndEvent();
 	}
 
 	public void AttackEndEvent()
 	{
-		CanAttack = true;
-		PlayerController.ResetMoveControl();
+		nbAttacks--;
+
+		if (nbAttacks <= 0)
+		{
+			nbAttacks = 0;
+			CanAttack = true;
+			PlayerController.ResetMoveControl();
+		}
 	}
 
 	public void DoDamageEvent()

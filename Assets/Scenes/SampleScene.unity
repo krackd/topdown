@@ -907,7 +907,42 @@ Prefab:
     - target: {fileID: 114661813250092682, guid: 98a7ad831c0a5d443a219e724abeed0d,
         type: 2}
       propertyPath: DurationInSeconds
-      value: 0.4
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114616572769606420, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: DurationInSeconds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307961755971412, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: RechargeCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307961755971412, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: Charges
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114661813250092682, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: HalfDurationFactor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307961755971412, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: Velocity
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307961755971412, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: HalfDurationFactor
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114661813250092682, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 2}
+      propertyPath: Charges
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 2}
@@ -1004,8 +1039,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1369623244}
-  TranslationSmoothTime: 0.05
+  TranslationSmoothTime: 0.025
   RotationSpeed: 0.1
+  SkipYTranslation: 1
   UseLookAroundButton: 0
   CamOffset: {x: 0, y: 7, z: -4}
   MouseOffset: {x: 0.125, y: 0, z: 0.125}

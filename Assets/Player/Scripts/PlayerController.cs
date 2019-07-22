@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	private const float MOVE_CONTROL_REDUCTION_FACTOR = 0.5f;
+	//private const float MOVE_CONTROL_REDUCTION_FACTOR = 0.4f;
 
 	#region Component Data
 
@@ -21,11 +21,6 @@ public class PlayerController : MonoBehaviour {
 	[Header("Joystick Rotation")]
 	public float JoystickSensitivity = 10f;
 
-	[Header("Attack")]
-	public float AttackRechargeDelayInSeconds = 3f;
-	public int MaxAttackCharges = 3;
-	private int attackCharges;
-
 	#endregion
 
 	#region Properties
@@ -37,9 +32,7 @@ public class PlayerController : MonoBehaviour {
 	#region Private fields
 
 	private Rigidbody rb;
-	private Collider[] colliders;
 	private Health health;
-	private PlayerStates states;
 	private Animations anims;
 	private RectTransform cursor;
 	
@@ -60,18 +53,13 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogError("No rigid body found in player!");
 		}
 
-		colliders = GetComponents<Collider>();
-
 		ResetMoveControl();
 
 		health = GetComponent<Health>();
-		states = GetComponent<PlayerStates>();
 		anims = GetComponentInChildren<Animations>();
 		
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
-
-		attackCharges = MaxAttackCharges;
 	}
 
 	// Update is called once per frame
@@ -180,8 +168,8 @@ public class PlayerController : MonoBehaviour {
 		moveForce = MoveForce;
 	}
 
-	public void ReduceMoveControl()
+	public void ReduceMoveControl(float moveReductionFactor)
 	{
-		moveForce = MoveForce * MOVE_CONTROL_REDUCTION_FACTOR;
+		moveForce = MoveForce * moveReductionFactor;
 	}
 }

@@ -2,9 +2,11 @@
 
 public class FollowCamera : MonoBehaviour
 {
+	[Header("Target")]
 	public GameObject target;
 	public float TranslationSmoothTime = 0.1f;
 	public float RotationSpeed = 0.1f;
+	public bool SkipYTranslation = true;
 
 	[Header("Offset")]
 	public bool UseLookAroundButton = false;
@@ -27,21 +29,27 @@ public class FollowCamera : MonoBehaviour
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 
-		UpdatePosition(false);
+		UpdatePosition(false, false);
 		UpdateRotation();
 	}
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		UpdatePosition(true);
+		UpdatePosition(true, SkipYTranslation);
 	}
 
-	private void UpdatePosition(bool isSmooth)
+	private void UpdatePosition(bool isSmooth, bool skipY)
 	{
 		Vector3 currentVelocity = Vector3.zero;
 		Vector3 targetPos = target.transform.position;
 		targetPos += CamOffset;
+
+		if (skipY)
+		{
+			targetPos.y = transform.position.y;
+		}
+
 		Vector3 pos = isSmooth ? Vector3.SmoothDamp(transform.position, targetPos, ref currentVelocity, TranslationSmoothTime) : targetPos;
 		
 		if (!UseLookAroundButton || Input.GetButton("LookAround"))

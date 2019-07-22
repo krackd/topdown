@@ -1,6 +1,6 @@
 ﻿public class AbilityTemplate : MoveAbility
 {
-	protected override void DoAction()
+	protected override void DoActionBeforeDuration()
 	{
 		
 	}

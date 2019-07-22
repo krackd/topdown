@@ -87,6 +87,11 @@ public class Animations : MonoBehaviour {
 		anim.SetTrigger("JumpAttack");
 	}
 
+	public void SetIsDashing(bool isDashing)
+	{
+		anim.SetBool("isDashing", isDashing);
+	}
+
 	// Events
 
 	public void AttackEndEvent()
