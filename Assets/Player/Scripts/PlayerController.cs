@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+	private const float MOVE_CONTROL_REDUCTION_FACTOR = 0.5f;
+
 	#region Component Data
 
 	[Header("Movement")]
 	public float MoveForce = 2f;
+	private float moveForce;
 	[Range(0.01f, 10f)]
-	public float MaxSpeed = 2f;
 	private bool canMove = true;
 
 	[Header("Mouse Rotation")]
@@ -75,6 +77,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		colliders = GetComponents<Collider>();
+
+		ResetMoveControl();
 
 		health = GetComponent<Health>();
 		states = GetComponent<PlayerStates>();
@@ -164,8 +168,14 @@ public class PlayerController : MonoBehaviour {
 	
 	private void DoJump()
 	{
-		rb.velocity = transform.forward * JumpVelocity;
-		canMove = false;
+		rb.velocity = (transform.forward + transform.up).normalized * JumpVelocity;
+		ReduceMoveControl();
+
+		timeout(JumpDurationInSeconds * 0.6f, () =>
+		{
+			rb.velocity = -transform.up * JumpVelocity;
+		});
+
 		timeout(JumpDurationInSeconds, () =>
 		{
 			rb.velocity = Vector3.zero;
@@ -192,6 +202,7 @@ public class PlayerController : MonoBehaviour {
 			RestartResetAttackCharges();
 
 			canAttack = false;
+			ReduceMoveControl();
 			attackCharges--;
 		}
 	}
@@ -214,6 +225,7 @@ public class PlayerController : MonoBehaviour {
 	public void AttackEndEvent()
 	{
 		canAttack = true;
+		ResetMoveControl();
 	}
 
 	public void DoDamageEvent()
@@ -243,7 +255,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			dir.Normalize();
 		}
-		dir *= MoveForce;
+		dir *= moveForce;
 		Vector3 delta = dir * Time.deltaTime;
 		rb.MovePosition(transform.position + delta);
 
@@ -302,6 +314,16 @@ public class PlayerController : MonoBehaviour {
 	{
 		Quaternion rot = Quaternion.LookRotation(dir);
 		transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * RotationSpeed);
+	}
+
+	private void ResetMoveControl()
+	{
+		moveForce = MoveForce;
+	}
+
+	private void ReduceMoveControl()
+	{
+		moveForce = MoveForce * MOVE_CONTROL_REDUCTION_FACTOR;
 	}
 
 	private bool noModifierPressed()

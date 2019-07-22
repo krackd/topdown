@@ -2225,7 +2225,7 @@ MonoBehaviour:
   DashRechargeCooldown: 3
   DashCharges: 3
   JumpVelocity: 7
-  JumpDurationInSeconds: 0.6
+  JumpDurationInSeconds: 0.5
   JumpRechargeCooldown: 3
 --- !u!136 &136398075950058052
 CapsuleCollider:
