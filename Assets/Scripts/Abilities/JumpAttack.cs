@@ -26,14 +26,14 @@ public class JumpAttack : MoveAbility
 
 	private void DoJump()
 	{
-		Rigidbody.velocity = (transform.forward + transform.up).normalized * Velocity;
+		Rigidbody.velocity += (transform.forward + transform.up).normalized * Velocity;
 		PlayerController.ReduceMoveControl();
 		LaunchTimers();
 	}
 
 	protected override void DoHalfDurationAction()
 	{
-		Rigidbody.velocity += -transform.up * Velocity;
+		Rigidbody.velocity += -transform.up * 2 * Velocity;
 	}
 
 	protected override void DoActionAfterDuration()
