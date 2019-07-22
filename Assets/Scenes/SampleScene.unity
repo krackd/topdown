@@ -1090,12 +1090,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1216a30fe40844caf6711462c9ed21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DurationInSeconds: 2
-  RechargeCooldown: 3
+  RechargeCooldown: 1
   Charges: 3
-  ButtonName: Fire1
   LaunchTimersInUpdate: 1
-  HalfDurationFactor: 0.5
+  ButtonName: Fire1
   CanAttack: 1
 --- !u!1 &581513834
 GameObject:

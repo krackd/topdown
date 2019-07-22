@@ -9,6 +9,8 @@ public class Attack : Ability
 
 	protected override void DoStart()
 	{
+		base.DoStart();
+
 		Animations.OnAttackEnded.AddListener(AttackEndEvent);
 		Animations.OnDoDamage.AddListener(DoDamageEvent);
 		Animations.OnDoAoe.AddListener(DoAoeEvent);
@@ -18,6 +20,8 @@ public class Attack : Ability
 
 	protected override void DoAction()
 	{
+		base.DoAction();
+	
 		if (!CanAttack)
 		{
 			CancelAction();
@@ -46,16 +50,6 @@ public class Attack : Ability
 	public void DoAoeEvent()
 	{
 
-	}
-
-	protected override void DoActionAfterDuration()
-	{
-		
-	}
-
-	protected override void DoHalfDurationAction()
-	{
-		
 	}
 
 	private void RestartResetAttackCharges()

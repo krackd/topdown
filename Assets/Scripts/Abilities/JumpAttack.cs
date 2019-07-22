@@ -10,8 +10,10 @@ public class JumpAttack : MoveAbility
 		HalfDurationFactor = 0.6f;
 	}
 	
-	protected override void DoAction()
+	protected override void DoActionBeforeDuration()
 	{
+		base.DoActionBeforeDuration();
+
 		Attack.CanAttack = false;
 		// JumpBeginEvent will change the velocity
 		Animations.JumpAttack();

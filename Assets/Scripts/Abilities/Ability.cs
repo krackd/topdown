@@ -5,17 +5,13 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour {
 
 	[Header("Ability")]
-	public float DurationInSeconds = 2f;
 	public float RechargeCooldown = 3f;
 	public int Charges = 3;
 	protected int charges;
+	public bool LaunchTimersInUpdate = true;
 
 	[Header("Input")]
 	public string ButtonName;
-
-	[Header("Timers")]
-	public bool LaunchTimersInUpdate = true;
-	public float HalfDurationFactor = 0.5f;
 	
 	protected PlayerController PlayerController { get; private set; }
 	protected Rigidbody Rigidbody { get; private set; }
@@ -24,7 +20,7 @@ public abstract class Ability : MonoBehaviour {
 
 	protected bool IsDead { get { return Health != null && Health.IsDead; } }
 
-	private bool actionCanceled = false;
+	protected bool ActionCanceled = false;
 
 	// Use this for initialization
 	void Start () {
@@ -55,9 +51,9 @@ public abstract class Ability : MonoBehaviour {
 		{
 			DoAction();
 
-			if (actionCanceled)
+			if (ActionCanceled)
 			{
-				actionCanceled = false;
+				ActionCanceled = false;
 				return;
 			}
 
@@ -67,24 +63,15 @@ public abstract class Ability : MonoBehaviour {
 			{
 				LaunchTimers();
 			}
-			
+
 		}
 	}
 
-	protected void LaunchTimers()
+	protected virtual void LaunchTimers()
 	{
-		CoroutineUtils.timeout(this, DurationInSeconds * HalfDurationFactor, () =>
+		CoroutineUtils.timeout(this, RechargeCooldown, () =>
 		{
-			DoHalfDurationAction();
-		});
-
-		CoroutineUtils.timeout(this, DurationInSeconds, () =>
-		{
-			DoActionAfterDuration();
-			CoroutineUtils.timeout(this, RechargeCooldown, () =>
-			{
-				charges++;
-			});
+			charges++;
 		});
 	}
 
@@ -95,10 +82,11 @@ public abstract class Ability : MonoBehaviour {
 
 	protected void CancelAction()
 	{
-		actionCanceled = true;
+		ActionCanceled = true;
 	}
 
-	protected abstract void DoAction();
-	protected abstract void DoHalfDurationAction();
-	protected abstract void DoActionAfterDuration();
+	protected virtual void DoAction()
+	{
+
+	}
 }
