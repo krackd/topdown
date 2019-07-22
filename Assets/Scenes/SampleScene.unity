@@ -1074,27 +1074,6 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
---- !u!1 &557450833 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1949970075081370, guid: 98a7ad831c0a5d443a219e724abeed0d,
-    type: 2}
-  m_PrefabInternal: {fileID: 465603866}
---- !u!114 &557450834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 557450833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1216a30fe40844caf6711462c9ed21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RechargeCooldown: 1
-  Charges: 3
-  LaunchTimersInUpdate: 1
-  ButtonName: Fire1
-  CanAttack: 1
 --- !u!1 &581513834
 GameObject:
   m_ObjectHideFlags: 0
