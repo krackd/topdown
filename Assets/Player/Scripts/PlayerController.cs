@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour {
 
 		UpdateRotation();
 
-		Debug.Log(moveForce);
 		moveForce = Mathf.Lerp(moveForce, moveForceTarget, Time.deltaTime * 10);
 
 		previousMousePos = Input.mousePosition;
