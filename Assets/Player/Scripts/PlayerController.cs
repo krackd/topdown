@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Movement")]
 	public float MoveForce = 2f;
 	private float moveForce;
+	private float moveForceTarget;
 	public bool CanMove = true;
 	public Vector3 MoveDir { get; private set; }
 
@@ -81,6 +82,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateRotation();
+
+		Debug.Log(moveForce);
+		moveForce = Mathf.Lerp(moveForce, moveForceTarget, Time.deltaTime * 10);
 
 		previousMousePos = Input.mousePosition;
 	}
@@ -165,11 +169,11 @@ public class PlayerController : MonoBehaviour {
 
 	public void ResetMoveControl()
 	{
-		moveForce = MoveForce;
+		moveForceTarget = MoveForce;
 	}
 
 	public void ReduceMoveControl(float moveReductionFactor)
 	{
-		moveForce = MoveForce * moveReductionFactor;
+		moveForceTarget = MoveForce * moveReductionFactor;
 	}
 }
