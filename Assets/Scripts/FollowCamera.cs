@@ -43,32 +43,31 @@ public class FollowCamera : MonoBehaviour
 	{
 		Vector3 currentVelocity = Vector3.zero;
 		Vector3 targetPos = target.transform.position;
-		targetPos += CamOffset;
 
 		if (skipY)
 		{
-			targetPos.y = transform.position.y;
+			targetPos.y = 0;
 		}
 
-		Vector3 pos = isSmooth ? Vector3.SmoothDamp(transform.position, targetPos, ref currentVelocity, TranslationSmoothTime) : targetPos;
+		targetPos += CamOffset;
 		
-		if (!UseLookAroundButton || Input.GetButton("LookAround"))
-		{
-			pos = lookAround(pos);
-		}
+		Vector3 pos = isSmooth ? Vector3.SmoothDamp(transform.position, targetPos, ref currentVelocity, TranslationSmoothTime) : targetPos;
+
+		bool increaseLookAround = Input.GetButton("LookAround");
+		pos = lookAround(pos, increaseLookAround ? 8f : 1f);
 
 		transform.position = pos;
 	}
 
-	private Vector3 lookAround(Vector3 pos)
+	private Vector3 lookAround(Vector3 pos, float factor)
 	{
 		Vector3 mouse = Camera.main.ScreenToViewportPoint(cursor.position);
 		mouse *= 2f;
 		mouse.y -= 1f;
 		mouse.x -= 1f;
 
-		pos.z += MouseOffset.z * mouse.y;
-		pos.x += MouseOffset.x * mouse.x;
+		pos.z += MouseOffset.z * mouse.y * factor;
+		pos.x += MouseOffset.x * mouse.x * factor;
 		return pos;
 	}
 
