@@ -5,7 +5,8 @@ public class Dash : MoveAbility
 {
 	private Queue velocities = new Queue();
 
-	private JumpAttack jump;
+	private JumpAttack jumpAttack;
+	private Jump jump;
 
 	private bool canDash = true;
 
@@ -13,7 +14,8 @@ public class Dash : MoveAbility
 	{
 		base.DoStart();
 
-		jump = GetComponent<JumpAttack>();
+		jumpAttack = GetComponent<JumpAttack>();
+		jump = GetComponent<Jump>();
 	}
 
 	protected override void DoActionBeforeDuration()
@@ -41,7 +43,7 @@ public class Dash : MoveAbility
 		Health.IsInvincible = true;
 		velocities.Enqueue(dashVelocity);
 
-		if (!jump.IsJumping)
+		if (!jump.IsJumping && !jumpAttack.IsJumping)
 		{
 			Animations.SetIsDashing(true);
 		}
