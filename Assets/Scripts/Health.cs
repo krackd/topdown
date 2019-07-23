@@ -12,7 +12,7 @@ public class Health : MonoBehaviour {
 
 	[Header("Modifiers")]
 	public float ProjectileDamageFactor = 1f;
-	public float BeamDamageFactor = 1f;
+	public float MeleeDamageFactor = 1f;
 
 	public bool IsDead { get { return hp <= 0; } }
 
@@ -55,7 +55,7 @@ public class Health : MonoBehaviour {
 		MeleeWeapon beam = otherGo.GetComponentInParent<MeleeWeapon>();
 		if (beam != null && beam.CanHurt)
 		{
-			Hurt((int)(beam.Damage * BeamDamageFactor));
+			Hurt((int)(beam.Damage * MeleeDamageFactor));
 			beam.StartCooldown();
 		}
 	}

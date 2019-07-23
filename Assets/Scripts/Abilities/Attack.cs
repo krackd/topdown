@@ -3,10 +3,12 @@
 public class Attack : TimedAbility
 {
 	[Header("Attack")]
+	public float Range = 1f;
 	public bool CanAttack = true;
+	public LayerMask AttackMask;
+	public Transform RaycastOrigin;
 
 	private const float ATTACK_MOVE_REDUCTION_FACTOR = 0.5f;
-
 	private Coroutine attackCoroutine;
 
 	private int nbAttacks = 0;
@@ -62,7 +64,24 @@ public class Attack : TimedAbility
 
 	public void DoDamageEvent()
 	{
+		RaycastHit hit = new RaycastHit();
+		//Ray ray = new Ray(RaycastOrigin.position, transform.forward);
+		Vector3 origin = RaycastOrigin.position - transform.forward * 0.5f;
+		Vector3 dir = (transform.forward - transform.up * 0.5f).normalized;
+		Ray ray = new Ray(origin, dir);
+		if (Physics.Raycast(ray, out hit, Range, AttackMask.value))
+		{
+			Health health = hit.collider.gameObject.GetComponent<Health>();
+			if (health == null)
+			{
+				health = hit.collider.gameObject.GetComponentInParent<Health>();
+			}
 
+			if (health != null)
+			{
+				health.Hurt(1);
+			}
+		}
 	}
 
 	public void DoAoeEvent()
