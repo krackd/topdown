@@ -65,11 +65,8 @@ public class Attack : TimedAbility
 	public void DoDamageEvent()
 	{
 		RaycastHit hit = new RaycastHit();
-		//Ray ray = new Ray(RaycastOrigin.position, transform.forward);
 		foreach (Transform originTransform in RaycastOrigins)
 		{
-			//Vector3 origin = RaycastOrigin.position - transform.forward * 0.5f;
-			//Vector3 dir = (transform.forward - transform.up * 0.5f).normalized;
 			Vector3 origin = originTransform.position;
 			Vector3 dir = transform.forward;
 			Ray ray = new Ray(origin, dir);
