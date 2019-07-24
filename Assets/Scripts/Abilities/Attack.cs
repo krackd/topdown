@@ -6,7 +6,7 @@ public class Attack : TimedAbility
 	public float Range = 1f;
 	public bool CanAttack = true;
 	public LayerMask AttackMask;
-	public Transform RaycastOrigin;
+	public Transform[] RaycastOrigins;
 
 	private const float ATTACK_MOVE_REDUCTION_FACTOR = 0.5f;
 	private Coroutine attackCoroutine;
@@ -66,20 +66,25 @@ public class Attack : TimedAbility
 	{
 		RaycastHit hit = new RaycastHit();
 		//Ray ray = new Ray(RaycastOrigin.position, transform.forward);
-		Vector3 origin = RaycastOrigin.position - transform.forward * 0.5f;
-		Vector3 dir = (transform.forward - transform.up * 0.5f).normalized;
-		Ray ray = new Ray(origin, dir);
-		if (Physics.Raycast(ray, out hit, Range, AttackMask.value))
+		foreach (Transform originTransform in RaycastOrigins)
 		{
-			Health health = hit.collider.gameObject.GetComponent<Health>();
-			if (health == null)
+			//Vector3 origin = RaycastOrigin.position - transform.forward * 0.5f;
+			//Vector3 dir = (transform.forward - transform.up * 0.5f).normalized;
+			Vector3 origin = originTransform.position;
+			Vector3 dir = transform.forward;
+			Ray ray = new Ray(origin, dir);
+			if (Physics.Raycast(ray, out hit, Range, AttackMask.value))
 			{
-				health = hit.collider.gameObject.GetComponentInParent<Health>();
-			}
+				Health health = hit.collider.gameObject.GetComponent<Health>();
+				if (health == null)
+				{
+					health = hit.collider.gameObject.GetComponentInParent<Health>();
+				}
 
-			if (health != null)
-			{
-				health.Hurt(1);
+				if (health != null)
+				{
+					health.Hurt(1);
+				}
 			}
 		}
 	}
