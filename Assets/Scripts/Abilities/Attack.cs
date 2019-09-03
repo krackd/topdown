@@ -4,7 +4,6 @@ public class Attack : TimedAbility
 {
 	[Header("Attack")]
 	public float Range = 1f;
-	public bool CanAttack = true;
 	public LayerMask AttackMask;
 	public Transform[] RaycastOrigins;
 
@@ -19,26 +18,20 @@ public class Attack : TimedAbility
 
 		Animations.OnAttackEnded.AddListener(AttackEndEvent);
 		Animations.OnDoDamage.AddListener(DoDamageEvent);
-		Animations.OnDoAoe.AddListener(DoAoeEvent);
 
 		LaunchTimersInUpdate = false;
+		LockForDuration = false;
 	}
 
 	protected override void DoActionBeforeDuration()
 	{
 		base.DoActionBeforeDuration();
-	
-		if (!CanAttack)
-		{
-			CancelAction();
-			return;
-		}
 
 		Animations.Attack();
 
 		RestartResetAttackCharges();
 
-		CanAttack = false;
+		CanPerform = false;
 		nbAttacks++;
 		PlayerController.ReduceMoveControl(ATTACK_MOVE_REDUCTION_FACTOR);
 	}
@@ -57,7 +50,7 @@ public class Attack : TimedAbility
 		if (nbAttacks <= 0)
 		{
 			nbAttacks = 0;
-			CanAttack = true;
+			CanPerform = true;
 			PlayerController.ResetMoveControl();
 		}
 	}
@@ -84,11 +77,6 @@ public class Attack : TimedAbility
 				}
 			}
 		}
-	}
-
-	public void DoAoeEvent()
-	{
-
 	}
 
 	private void RestartResetAttackCharges()

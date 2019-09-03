@@ -8,6 +8,7 @@ public abstract class Ability : MonoBehaviour {
 	public float RechargeCooldown = 3f;
 	public int Charges = 3;
 	protected int charges;
+	public bool HasCharges { get { return charges > 0; } }
 	public bool LaunchTimersInUpdate = true;
 
 	[Header("Input")]

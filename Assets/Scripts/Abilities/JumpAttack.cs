@@ -14,6 +14,7 @@ public class JumpAttack : MoveAbility
 	{
 		base.DoStart();
 		Animations.OnJumpBegin.AddListener(JumpBeginEvent);
+		Animations.OnDoAoe.AddListener(DoAoeEvent);
 		LaunchTimersInUpdate = false;
 		HalfDurationFactor = 0.6f;
 
@@ -66,5 +67,10 @@ public class JumpAttack : MoveAbility
 		{
 			collider.enabled = isEnabled;
 		}
+	}
+
+	public void DoAoeEvent()
+	{
+
 	}
 }

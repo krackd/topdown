@@ -1,0 +1,139 @@
+fileFormatVersion: 2
+guid: 2e9964778e207fd49b48031fcecedc17
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: BaseFountain_low
+    100002: //RootNode
+    100004: GearHole2_low
+    100006: GearHole3_low
+    100008: GearHole4_low
+    100010: GearHole_low
+    100012: GearProper2_low
+    100014: GearProper_low
+    100016: Water_low
+    400000: BaseFountain_low
+    400002: //RootNode
+    400004: GearHole2_low
+    400006: GearHole3_low
+    400008: GearHole4_low
+    400010: GearHole_low
+    400012: GearProper2_low
+    400014: GearProper_low
+    400016: Water_low
+    2300000: BaseFountain_low
+    2300002: GearHole2_low
+    2300004: GearHole3_low
+    2300006: GearHole4_low
+    2300008: GearHole_low
+    2300010: GearProper2_low
+    2300012: GearProper_low
+    2300014: Water_low
+    3300000: BaseFountain_low
+    3300002: GearHole2_low
+    3300004: GearHole3_low
+    3300006: GearHole4_low
+    3300008: GearHole_low
+    3300010: GearProper2_low
+    3300012: GearProper_low
+    3300014: Water_low
+    4300000: BaseFountain_low
+    4300002: GearProper_low
+    4300004: GearHole_low
+    4300006: GearHole2_low
+    4300008: GearProper2_low
+    4300010: GearHole3_low
+    4300012: GearHole4_low
+    4300014: Water_low
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fountain
+    second: {fileID: 2100000, guid: a962b9cfbe59a45489306d2144fd4972, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gears
+    second: {fileID: 2100000, guid: 90034fd87cb01c140b31816327c078d6, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

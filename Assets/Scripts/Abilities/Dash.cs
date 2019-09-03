@@ -8,8 +8,6 @@ public class Dash : MoveAbility
 	private JumpAttack jumpAttack;
 	private Jump jump;
 
-	private bool canDash = true;
-
 	protected override void DoStart()
 	{
 		base.DoStart();
@@ -20,12 +18,6 @@ public class Dash : MoveAbility
 
 	protected override void DoActionBeforeDuration()
 	{
-		if (!canDash)
-		{
-			CancelAction();
-			return;
-		}
-
 		base.DoActionBeforeDuration();
 
 		Vector3 moveDir = PlayerController.MoveDir;
@@ -47,27 +39,19 @@ public class Dash : MoveAbility
 		{
 			Animations.SetIsDashing(true);
 		}
-		
-		canDash = false;
-	}
-
-	protected override void DoHalfDurationAction()
-	{
-		base.DoHalfDurationAction();
-		// Actually will be after end of duration
-		canDash = true;
 	}
 
 	protected override void DoActionAfterDuration()
 	{
 		base.DoActionAfterDuration();
 
-		Vector3 velocity = (Vector3)velocities.Dequeue();
-		Vector3 newVelocity = Rigidbody.velocity - velocity * 0.5f;
-		if (Vector3.Dot(newVelocity, PlayerController.MoveDir) > 0)
-		{
-			Rigidbody.velocity = newVelocity;
-		}
+		//Vector3 velocity = (Vector3)velocities.Dequeue();
+		//Vector3 newVelocity = Rigidbody.velocity - velocity * 0.5f;
+		//if (Vector3.Dot(newVelocity, PlayerController.MoveDir) > 0)
+		//{
+		//	Rigidbody.velocity = newVelocity;
+		//}
+		Rigidbody.velocity = Vector3.zero;
 		Rigidbody.useGravity = true;
 		PlayerController.CanMove = true;
 		Health.IsInvincible = false;

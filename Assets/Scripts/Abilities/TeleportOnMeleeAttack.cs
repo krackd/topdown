@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class TeleportOnMeleeAttack : Ability
+[RequireComponent(typeof(Attack))]
+public class TeleportOnMeleeAttack : TimedAbility
 {
 	[Header("Teleport")]
 	public float Range = 5f;
@@ -8,9 +9,24 @@ public class TeleportOnMeleeAttack : Ability
 	public LayerMask AttackMask;
 	public Transform[] RaycastOrigins;
 
-	protected override void DoAction()
+	private Attack attack;
+
+	protected override void DoStart()
 	{
-		base.DoAction();
+		base.DoStart();
+
+		attack = GetComponent<Attack>();
+	}
+
+	protected override void DoActionBeforeDuration()
+	{
+		if (!attack.HasCharges)
+		{
+			CancelAction();
+			return;
+		}
+
+		base.DoActionBeforeDuration();
 
 		RaycastHit hit = new RaycastHit();
 		foreach (Transform originTransform in RaycastOrigins)
