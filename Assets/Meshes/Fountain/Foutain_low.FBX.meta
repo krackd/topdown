@@ -56,6 +56,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Gears
     second: {fileID: 2100000, guid: 90034fd87cb01c140b31816327c078d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Water
+    second: {fileID: 2100000, guid: 379dfa41b82e27a4287582f563a70f2f, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
