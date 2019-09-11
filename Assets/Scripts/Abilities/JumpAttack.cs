@@ -4,7 +4,7 @@ public class JumpAttack : MoveAbility
 {
 	public bool IsJumping { get { return nbJumps > 0; } }
 
-	private const float JUMP_MOVE_REDUCTION_FACTOR = 0.3f;
+	private const float JUMP_MOVE_REDUCTION_FACTOR = 1f;
 
 	private int nbJumps = 0;
 
@@ -38,7 +38,7 @@ public class JumpAttack : MoveAbility
 	private void DoJump()
 	{
 		Rigidbody.velocity += (transform.forward + transform.up).normalized * Velocity;
-		SetCollidersEnabled(false);
+		//SetCollidersEnabled(false);
 		Health.IsInvincible = true;
 		PlayerController.ReduceMoveControl(JUMP_MOVE_REDUCTION_FACTOR);
 		LaunchTimers();
@@ -48,8 +48,8 @@ public class JumpAttack : MoveAbility
 	{
 		if (nbJumps <= 1)
 		{
-			SetCollidersEnabled(true);
-			Rigidbody.velocity += -transform.up * 1.5f * Velocity;
+			//SetCollidersEnabled(true);
+			//Rigidbody.velocity += -transform.up * 1.5f * Velocity;
 		}
 	}
 

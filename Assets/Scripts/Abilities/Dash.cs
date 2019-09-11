@@ -35,10 +35,11 @@ public class Dash : MoveAbility
 		Health.IsInvincible = true;
 		velocities.Enqueue(dashVelocity);
 
-		if (!jump.IsJumping && !jumpAttack.IsJumping)
-		{
-			Animations.SetIsDashing(true);
-		}
+		// Remove anim at the moment
+		//if (!jump.IsJumping && !jumpAttack.IsJumping)
+		//{
+		//	Animations.SetIsDashing(true);
+		//}
 	}
 
 	protected override void DoActionAfterDuration()
