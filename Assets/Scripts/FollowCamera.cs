@@ -23,9 +23,9 @@ public class FollowCamera : MonoBehaviour
 			Debug.LogError("The target of follow camera could not be null!");
 		}
 	}
-
-	private void Awake()
-	{
+	
+	private void OnEnable()
+{
 		GameObject cursorGo = GameObject.FindGameObjectWithTag("Cursor");
 		cursor = cursorGo != null ? cursorGo.GetComponent<RectTransform>() : null;
 
