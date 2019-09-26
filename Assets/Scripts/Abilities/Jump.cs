@@ -4,6 +4,8 @@ public class Jump : MoveAbility
 {
 	public bool IsJumping { get { return nbJumps > 0; } }
 
+	public GameObject ImpactEffect;
+
 	private const float JUMP_MOVE_REDUCTION_FACTOR = 0.8f;
 
 	private int nbJumps = 0;
@@ -60,6 +62,13 @@ public class Jump : MoveAbility
 		PlayerController.ResetMoveControl();
 		Health.IsInvincible = false;
 		nbJumps--;
+
+		// Spawn impact effect
+		if (ImpactEffect != null)
+		{
+			GameObject effect = Instantiate(ImpactEffect);
+			effect.transform.position = transform.position;
+		}
 	}
 
 	private void SetCollidersEnabled(bool isEnabled)

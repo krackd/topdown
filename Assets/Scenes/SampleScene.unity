@@ -853,7 +853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4535751836586322, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 136543877837219324, guid: 98a7ad831c0a5d443a219e724abeed0d,
         type: 3}
@@ -900,6 +900,12 @@ PrefabInstance:
       propertyPath: Velocity
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114294109262333272, guid: 98a7ad831c0a5d443a219e724abeed0d,
+        type: 3}
+      propertyPath: ImpactEffect
+      value: 
+      objectReference: {fileID: 2700355890309936564, guid: a2c1a5cbe658f534bbea12875af601a8,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 3}
 --- !u!1001 &487846797
@@ -1860,7 +1866,7 @@ Transform:
   - {fileID: 1551348025}
   - {fileID: 960935163}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1131911971
 PrefabInstance:
