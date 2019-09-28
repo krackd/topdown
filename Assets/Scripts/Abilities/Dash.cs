@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Dash : MoveAbility
 {
-	public GameObject DashEffect;
+	public GameObject DashTrail;
+	public ParticleSystem DashParticles;
 	public float DashDurationInSeconds = 0.5f;
 
 	private Queue velocities = new Queue();
@@ -18,9 +19,20 @@ public class Dash : MoveAbility
 		jumpAttack = GetComponent<JumpAttack>();
 		jump = GetComponent<Jump>();
 
-		if (DashEffect != null)
+		SetDashTrailEnable(false);
+	}
+
+	private void SetDashTrailEnable(bool enabled)
+	{
+		if (DashTrail != null)
 		{
-			DashEffect.SetActive(false);
+			DashTrail.SetActive(enabled);
+		}
+
+		if (DashParticles != null)
+		{
+			ParticleSystem.EmissionModule emission = DashParticles.emission;
+			emission.enabled = enabled;
 		}
 	}
 
@@ -44,10 +56,8 @@ public class Dash : MoveAbility
 		velocities.Enqueue(dashVelocity);
 
 		// Triggering dash trail effect
-		if (DashEffect != null) {
-			DashEffect.SetActive(true);
-			StartCoroutine(stopDash(DashDurationInSeconds));
-		}
+		SetDashTrailEnable(true);
+		StartCoroutine(stopDash(DashDurationInSeconds));
 
 		// Remove anim at the moment
 		//if (!jump.IsJumping && !jumpAttack.IsJumping)
@@ -81,10 +91,7 @@ public class Dash : MoveAbility
 	IEnumerator stopDash(float delay)
 	{
 		yield return new WaitForSeconds(delay);
-		if (DashEffect != null)
-		{
-			DashEffect.SetActive(false);
-		}
+		SetDashTrailEnable(false);
 	}
 
 }

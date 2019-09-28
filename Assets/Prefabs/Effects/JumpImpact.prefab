@@ -14102,13 +14102,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fa9d480f3b21744a9ed30ffa97c4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlesBudget: 1
+  ParticlesBudget: 0.1
   UseLightShadows: 1
   UseFastFlatDecalsForMobiles: 1
   UseCustomColor: 0
   EffectColor: {r: 1, g: 0, b: 0, a: 1}
   IsVisible: 1
-  FadeoutTime: 1.5
+  FadeoutTime: 0.5
   UseCollisionDetection: 1
   LimitMaxDistance: 0
   MaxDistnace: -1
@@ -14128,7 +14128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d30ebef577606342a0b5f6f2aa72ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds: 5
+  DelayInSeconds: 1
 --- !u!1 &2700355890309946322
 GameObject:
   m_ObjectHideFlags: 0
