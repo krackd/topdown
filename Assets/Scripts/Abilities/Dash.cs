@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Dash : MoveAbility
 {
+	public GameObject DashEffect;
+	public float DashDurationInSeconds = 0.5f;
+
 	private Queue velocities = new Queue();
 
 	private JumpAttack jumpAttack;
@@ -14,6 +17,11 @@ public class Dash : MoveAbility
 
 		jumpAttack = GetComponent<JumpAttack>();
 		jump = GetComponent<Jump>();
+
+		if (DashEffect != null)
+		{
+			DashEffect.SetActive(false);
+		}
 	}
 
 	protected override void DoActionBeforeDuration()
@@ -34,6 +42,12 @@ public class Dash : MoveAbility
 		PlayerController.CanMove = false;
 		Health.IsInvincible = true;
 		velocities.Enqueue(dashVelocity);
+
+		// Triggering dash trail effect
+		if (DashEffect != null) {
+			DashEffect.SetActive(true);
+			StartCoroutine(stopDash(DashDurationInSeconds));
+		}
 
 		// Remove anim at the moment
 		//if (!jump.IsJumping && !jumpAttack.IsJumping)
@@ -57,6 +71,20 @@ public class Dash : MoveAbility
 		PlayerController.CanMove = true;
 		Health.IsInvincible = false;
 		Animations.SetIsDashing(false);
+
+		//if (DashEffect != null)
+		//{
+		//	DashEffect.SetActive(false);
+		//}
 	}
-	
+
+	IEnumerator stopDash(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		if (DashEffect != null)
+		{
+			DashEffect.SetActive(false);
+		}
+	}
+
 }
