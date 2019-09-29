@@ -221,7 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5118836}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: InvibibleWalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 399143792}
   - component: {fileID: 399143791}
   - component: {fileID: 399143790}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2497,7 +2497,7 @@ GameObject:
   - component: {fileID: 1145654132}
   - component: {fileID: 1145654131}
   - component: {fileID: 1145654130}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2853,7 +2853,7 @@ GameObject:
   - component: {fileID: 1261906366}
   - component: {fileID: 1261906365}
   - component: {fileID: 1261906364}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4661,7 +4661,7 @@ GameObject:
   - component: {fileID: 1988195937}
   - component: {fileID: 1988195936}
   - component: {fileID: 1988195935}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
