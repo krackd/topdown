@@ -18977,7 +18977,7 @@ MonoBehaviour:
   ColliderRadius: 0.05
   FreezeRotation: 0
   UseTargetPositionAfterCollision: 0
-  EffectOnCollision: {fileID: 1369401709340560, guid: 9922a3006f27f504a8ad6992ba661791,
+  EffectOnCollision: {fileID: 3351401091659242204, guid: d796b88f785c4ca4e93073cfa30742c7,
     type: 3}
   CollisionEffectInWorldSpace: 1
   LookAtNormal: 1

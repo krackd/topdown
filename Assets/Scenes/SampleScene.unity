@@ -873,23 +873,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114661813250092682, guid: 98a7ad831c0a5d443a219e724abeed0d,
         type: 3}
-      propertyPath: DashDurationInSeconds
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 198603004622048008, guid: 98a7ad831c0a5d443a219e724abeed0d,
-        type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 198603004622048008, guid: 98a7ad831c0a5d443a219e724abeed0d,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.minScalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198603004622048008, guid: 98a7ad831c0a5d443a219e724abeed0d,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1
+      propertyPath: AudioDurationInSeconds
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a7ad831c0a5d443a219e724abeed0d, type: 3}

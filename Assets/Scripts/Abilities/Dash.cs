@@ -5,12 +5,17 @@ public class Dash : MoveAbility
 {
 	public GameObject DashTrail;
 	public ParticleSystem DashParticles;
-	public float DashDurationInSeconds = 0.5f;
+	public float DashEffectDurationInSeconds = 0.25f;
+	public AudioSource audio;
+	public float AudioDurationInSeconds = 0.5f;
 
 	private Queue velocities = new Queue();
 
 	private JumpAttack jumpAttack;
 	private Jump jump;
+
+	private Coroutine dashCoroutine;
+	private Coroutine audioCoroutine;
 
 	protected override void DoStart()
 	{
@@ -19,10 +24,11 @@ public class Dash : MoveAbility
 		jumpAttack = GetComponent<JumpAttack>();
 		jump = GetComponent<Jump>();
 
-		SetDashTrailEnable(false);
+		SetDashTrailEnabled(false);
+		SetAudioEnabled(false);
 	}
 
-	private void SetDashTrailEnable(bool enabled)
+	private void SetDashTrailEnabled(bool enabled)
 	{
 		if (DashTrail != null)
 		{
@@ -33,6 +39,31 @@ public class Dash : MoveAbility
 		{
 			ParticleSystem.EmissionModule emission = DashParticles.emission;
 			emission.enabled = enabled;
+		}
+
+		if (dashCoroutine != null)
+		{
+			StopCoroutine(dashCoroutine);
+			dashCoroutine = null;
+		}
+	}
+
+	private void SetAudioEnabled(bool enabled)
+	{
+		if (audio != null)
+		{
+			if (audio.enabled && enabled)
+			{
+				audio.Play();
+			}
+
+			audio.enabled = enabled;
+
+			if (audioCoroutine != null)
+			{
+				StopCoroutine(audioCoroutine);
+				audioCoroutine = null;
+			}
 		}
 	}
 
@@ -56,8 +87,10 @@ public class Dash : MoveAbility
 		velocities.Enqueue(dashVelocity);
 
 		// Triggering dash trail effect
-		SetDashTrailEnable(true);
-		StartCoroutine(stopDash(DashDurationInSeconds));
+		SetDashTrailEnabled(true);
+		SetAudioEnabled(true);
+		dashCoroutine = StartCoroutine(stopDash(DashEffectDurationInSeconds));
+		audioCoroutine = StartCoroutine(stopAudio(AudioDurationInSeconds));
 
 		// Remove anim at the moment
 		//if (!jump.IsJumping && !jumpAttack.IsJumping)
@@ -91,7 +124,15 @@ public class Dash : MoveAbility
 	IEnumerator stopDash(float delay)
 	{
 		yield return new WaitForSeconds(delay);
-		SetDashTrailEnable(false);
+		SetDashTrailEnabled(false);
+		dashCoroutine = null;
+	}
+
+	IEnumerator stopAudio(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		SetAudioEnabled(false);
+		audioCoroutine = null;
 	}
 
 }

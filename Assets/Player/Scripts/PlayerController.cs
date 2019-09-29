@@ -101,15 +101,17 @@ public class PlayerController : MonoBehaviour {
 		Vector3 vDir = Vector3.forward * v;
 		Vector3 hDir = Vector3.right * h;
 		Vector3 dir = vDir + hDir;
+		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
+		float backwardWalkFactor = rotatedDir.z < -0.6f ? 0.7f : 1f;
+
 		if (dir.sqrMagnitude > 1)
 		{
 			dir.Normalize();
 		}
-		dir *= moveForce;
+		dir *= moveForce * backwardWalkFactor;
 		Vector3 delta = dir * Time.deltaTime;
 		rb.MovePosition(transform.position + delta);
 
-		Vector3 rotatedDir = (Quaternion.Inverse(transform.rotation) * dir).normalized;
 		anims.SetVelocity(rotatedDir.x, rotatedDir.z);
 		anims.SetIsMoving(Input.GetButton("Vertical") || Input.GetButton("Horizontal"));
 		MoveDir = dir.normalized;
