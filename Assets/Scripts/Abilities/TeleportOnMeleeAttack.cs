@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Attack))]
 public class TeleportOnMeleeAttack : TimedAbility
 {
 	[Header("Teleport")]
@@ -15,7 +14,7 @@ public class TeleportOnMeleeAttack : TimedAbility
 	{
 		base.DoStart();
 
-		attack = GetComponent<Attack>();
+		attack = transform.parent.GetComponentInChildren<Attack>();
 	}
 
 	protected override void DoActionBeforeDuration()

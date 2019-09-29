@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Ability : MonoBehaviour {
+
+	[System.Serializable]
+	public class ChargesChangedEvent : UnityEvent<int> { }
 
 	[Header("Ability")]
 	public float RechargeCooldown = 3f;
@@ -13,7 +17,12 @@ public abstract class Ability : MonoBehaviour {
 
 	[Header("Input")]
 	public string ButtonName;
-	
+
+	[Header("Events")]
+	public ChargesChangedEvent OnChargesChanged;
+
+	private GameObject Player;
+
 	protected PlayerController PlayerController { get; private set; }
 	protected Rigidbody Rigidbody { get; private set; }
 	protected Health Health { get; private set; }
@@ -27,16 +36,18 @@ public abstract class Ability : MonoBehaviour {
 	void Start () {
 		charges = Charges;
 
-		PlayerController = GetComponent<PlayerController>();
 
-		Rigidbody = GetComponent<Rigidbody>();
+		Player = GameObject.FindGameObjectWithTag("Player");
+		PlayerController = Player.GetComponent<PlayerController>();
+
+		Rigidbody = Player.GetComponent<Rigidbody>();
 		if (Rigidbody == null)
 		{
 			Debug.LogError("No rigid body found in player!");
 		}
 
-		Health = GetComponent<Health>();
-		Animations = GetComponentInChildren<Animations>();
+		Health = Player.GetComponent<Health>();
+		Animations = Player.GetComponentInChildren<Animations>();
 
 		DoStart();
 	}
@@ -59,7 +70,9 @@ public abstract class Ability : MonoBehaviour {
 			}
 
 			charges--;
-			
+			OnChargesChanged.Invoke(charges);
+
+
 			if (LaunchTimersInUpdate)
 			{
 				LaunchTimers();
@@ -73,6 +86,7 @@ public abstract class Ability : MonoBehaviour {
 		CoroutineUtils.timeout(this, RechargeCooldown, () =>
 		{
 			charges++;
+			OnChargesChanged.Invoke(charges);
 		});
 	}
 

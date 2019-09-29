@@ -6,7 +6,7 @@ public class Dash : MoveAbility
 	public GameObject DashTrail;
 	public ParticleSystem DashParticles;
 	public float DashEffectDurationInSeconds = 0.25f;
-	public AudioSource audio;
+	public AudioSource dashAudio;
 	public float AudioDurationInSeconds = 0.5f;
 
 	private Queue velocities = new Queue();
@@ -50,14 +50,14 @@ public class Dash : MoveAbility
 
 	private void SetAudioEnabled(bool enabled)
 	{
-		if (audio != null)
+		if (dashAudio != null)
 		{
-			if (audio.enabled && enabled)
+			if (dashAudio.enabled && enabled)
 			{
-				audio.Play();
+				dashAudio.Play();
 			}
 
-			audio.enabled = enabled;
+			dashAudio.enabled = enabled;
 
 			if (audioCoroutine != null)
 			{
